@@ -15,6 +15,45 @@ bundle exec rails s
 bundle exec rspec
 ```
 
+## Request examples
+
+### POST request (create)
+
+The default secret key specified in `.env` file is `my$ecretK3y`.
+
+You can generate the JWT token for the POST request using rails console:
+
+```
+payload = { score: 1, touchpoint: 'feedback', respondent_class: 'seller', respondent_id: 1, object_class: 'realtor', object_id: 1}
+secret = ENV.fetch('HMAC_SECRET') # Or secret = 'my$ecretK3y'
+token = JWT.encode(payload, secret)
+=> "eyJhbGciOiJIUzI1NiJ9.eyJzY29yZSI6MSwidG91Y2hwb2ludCI6ImZlZWRiYWNrIiwicmVzcG9uZGVudF9jbGFzcyI6InNlbGxlciIsInJlc3BvbmRlbnRfaWQiOjEsIm9iamVjdF9jbGFzcyI6InJlYWx0b3IiLCJvYmplY3RfaWQiOjF9.uIufRCWU0yl_hEtxcT9pfeQiJKuIFopRUbbBDlWKkAg"
+```
+
+Then you can use this token to create the new record:
+
+```
+curl --request POST "http://127.0.0.1:3000/api/net_promoter_scores" --header "Content-Type: application/json" --data '{"token":"eyJhbGciOiJIUzI1NiJ9.eyJzY29yZSI6MSwidG91Y2hwb2ludCI6ImZlZWRiYWNrIiwicmVzcG9uZGVudF9jbGFzcyI6InNlbGxlciIsInJlc3BvbmRlbnRfaWQiOjEsIm9iamVjdF9jbGFzcyI6InJlYWx0b3IiLCJvYmplY3RfaWQiOjF9.uIufRCWU0yl_hEtxcT9pfeQiJKuIFopRUbbBDlWKkAg"}'
+```
+
+And another one:
+
+```
+curl --request POST "http://127.0.0.1:3000/api/net_promoter_scores" --header "Content-Type: application/json" --data '{"token":"eyJhbGciOiJIUzI1NiJ9.eyJzY29yZSI6NSwidG91Y2hwb2ludCI6ImZlZWRiYWNrIiwicmVzcG9uZGVudF9jbGFzcyI6InNlbGxlciIsInJlc3BvbmRlbnRfaWQiOjIsIm9iamVjdF9jbGFzcyI6InJlYWx0b3IiLCJvYmplY3RfaWQiOjJ9.159R8eTQ6_OQJvTRhDIi286xESAp2Nf4c1cgfVIhlrM"}'
+```
+
+### GET request (index)
+
+There isn't any authenrication, because it wasn't expected by the task. So you can just call the api endpoint. For the two records created by the POST requests:
+
+```
+curl "http://127.0.0.1:3000/api/net_promoter_scores?touchpoint=feedback"
+
+{"net_promoter_scores":[{"id":1,"score":1,"touchpoint":"feedback","respondent_class":"seller","respondent_id":1,"object_class":"realtor","object_id":1,"created_at":"2020-01-25T22:20:36.483Z","updated_at":"2020-01-25T22:20:36.483Z"},{"id":2,"score":5,"touchpoint":"feedback","respondent_class":"seller","respondent_id":2,"object_class":"realtor","object_id":2,"created_at":"2020-01-25T23:19:03.012Z","updated_at":"2020-01-25T23:19:03.012Z"}]}
+```
+
+The required parameter is `touchpoint`.
+The optional parameters are: `object_class` and `respondent_class`.
 
 ## Technology decisions:
 
