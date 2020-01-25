@@ -18,7 +18,7 @@ module Api
           render json: { errors: nps.errors }, status: :unprocessable_entity
         end
       else
-        head :unauthorized
+        render json: { errors: jwt_params.errors }, status: :unprocessable_entity
       end
     end
 

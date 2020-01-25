@@ -1,27 +1,33 @@
 # frozen_string_literal: true
 
 class JwtParams
+  class InvalidToken < StandardError; end
+
   SECRET = ENV.fetch('HMAC_SECRET')
   ATTRIBUTES = %i[score touchpoint respondent_class respondent_id object_class object_id].freeze
 
-  attr_reader :payload
+  attr_reader :payload, :errors
 
   def initialize(token)
     @payload = JWT.decode(token, SECRET, true).first.symbolize_keys
-
-    # The fetch method raises the KeyError exceprion if the key doesn't exist.
-    # It's a simples check that all necessary fields are existed in the payload, which means that it's valid for our case.
-    # In a more complex situation we can use anoter instrument like dry-struckt
-    ATTRIBUTES.each do |attribute|
-      @payload.fetch(attribute)
-    end
-
     @valid = true
-  rescue JWT::VerificationError, KeyError
-    @valid = false
+
+    ATTRIBUTES.each do |attribute|
+      add_error(attribute) unless @payload.fetch(attribute, nil)
+    end
+  rescue JWT::VerificationError
+    raise InvalidToken
   end
 
   def valid?
     @valid
+  end
+
+  private
+
+  def add_error(attribute)
+    @valid = false
+    @errors ||= {}
+    @errors[attribute] = ['is required']
   end
 end

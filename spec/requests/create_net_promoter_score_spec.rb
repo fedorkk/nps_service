@@ -53,9 +53,15 @@ describe 'create NetPromoterScore', type: :request do
   context 'without full data in payload' do
     let(:attributes) { super().reject { |k| k == :score } }
 
-    it 'returns 401 code' do
+    it 'returns 422 code' do
       request
-      expect(response).to have_http_status(:unauthorized)
+      expect(response).to have_http_status(:unprocessable_entity)
+    end
+
+    it 'returns errors json' do
+      request
+
+      expect(JSON.parse(response.body)['errors']['score'].first).to eq('is required')
     end
   end
 

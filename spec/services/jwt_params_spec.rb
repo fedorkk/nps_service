@@ -17,17 +17,11 @@ describe JwtParams do
 
   it { expect(jwt_params.valid?).to eq(true) }
   it { expect(jwt_params.payload).to eq(attributes) }
-  it { expect(jwt_params.score).to eq(attributes[:score]) }
-  it { expect(jwt_params.touchpoint).to eq(attributes[:touchpoint]) }
-  it { expect(jwt_params.respondent_class).to eq(attributes[:respondent_class]) }
-  it { expect(jwt_params.respondent_id).to eq(attributes[:respondent_id]) }
-  it { expect(jwt_params.object_class).to eq(attributes[:object_class]) }
-  it { expect(jwt_params.object_id).to eq(attributes[:object_id]) }
 
   context 'invalid token' do
     let(:secret) { 'test_bad_secret' }
 
-    it { expect(jwt_params.valid?).to eq(false) }
+    it { expect { jwt_params }.to raise_error(JwtParams::InvalidToken) }
   end
 
   describe 'invalid data in payload' do
