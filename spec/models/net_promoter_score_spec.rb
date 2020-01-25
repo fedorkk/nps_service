@@ -13,9 +13,7 @@ describe NetPromoterScore, type: :model do
   end
   let(:nps) { described_class.new(attributes) }
 
-  it 'works' do
-    expect(nps.valid?).to eq(true)
-  end
+  it { expect(nps.valid?).to eq(true) }
 
   describe 'validations' do
     context 'nil score' do
