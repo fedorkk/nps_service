@@ -14,10 +14,12 @@ class CreateNetPromoterScores < ActiveRecord::Migration[5.2]
     end
 
     # Uniq index to prevent creating of any duplications on the database level
-    add_index :net_promoter_scores, %i[respondent_class respondent_id object_class object_id], unique: true
+    add_index :net_promoter_scores, %i[respondent_class respondent_id object_class object_id],
+              unique: true,
+              name: 'duplication_protection_index'
 
     # Indexes for the faster search by respondent and object
-    add_index :net_promoter_scores, [:respondent_class, :respondent_id]
-    add_index :net_promoter_scores, [:object_class, :object_id]
+    add_index :net_promoter_scores, [:respondent_class, :respondent_id], name: 'respondent_index'
+    add_index :net_promoter_scores, [:object_class, :object_id], name: 'object_index'
   end
 end
