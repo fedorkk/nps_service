@@ -44,7 +44,7 @@ curl --request POST "http://127.0.0.1:3000/api/net_promoter_scores" --header "Co
 
 ### GET request (index)
 
-There isn't any authenrication, because it wasn't expected by the task. So you can just call the api endpoint. For the two records created by the POST requests:
+There isn't any authentication, because it wasn't expected by the task. So you can just call the API endpoint. For the two records created by the POST requests:
 
 ```
 curl "http://127.0.0.1:3000/api/net_promoter_scores?touchpoint=feedback"
@@ -53,6 +53,7 @@ curl "http://127.0.0.1:3000/api/net_promoter_scores?touchpoint=feedback"
 ```
 
 The required parameter is `touchpoint`.
+
 The optional parameters are: `object_class` and `respondent_class`.
 
 ## Technology decisions:
