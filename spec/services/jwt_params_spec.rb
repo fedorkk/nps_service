@@ -29,36 +29,42 @@ describe JwtParams do
       let(:attributes) { super().reject { |k| k == :score } }
 
       it { expect(jwt_params.valid?).to eq(false) }
+      it { expect(jwt_params.errors).to eq(score: ['is required']) }
     end
 
     context 'touchpoint does not exist' do
       let(:attributes) { super().reject { |k| k == :touchpoint } }
 
       it { expect(jwt_params.valid?).to eq(false) }
+      it { expect(jwt_params.errors).to eq(touchpoint: ['is required']) }
     end
 
     context 'respondent_class does not exist' do
       let(:attributes) { super().reject { |k| k == :respondent_class } }
 
       it { expect(jwt_params.valid?).to eq(false) }
+      it { expect(jwt_params.errors).to eq(respondent_class: ['is required']) }
     end
 
     context 'respondent_id does not exist' do
       let(:attributes) { super().reject { |k| k == :respondent_id } }
 
       it { expect(jwt_params.valid?).to eq(false) }
+      it { expect(jwt_params.errors).to eq(respondent_id: ['is required']) }
     end
 
     context 'object_class does not exist' do
       let(:attributes) { super().reject { |k| k == :object_class } }
 
       it { expect(jwt_params.valid?).to eq(false) }
+      it { expect(jwt_params.errors).to eq(object_class: ['is required']) }
     end
 
     context 'object_id does not exist' do
       let(:attributes) { super().reject { |k| k == :object_id } }
 
       it { expect(jwt_params.valid?).to eq(false) }
+      it { expect(jwt_params.errors).to eq(object_id: ['is required']) }
     end
   end
 end
