@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Api
-  class NetPromoterScoresController < ApplicationController
+  class NetPromoterScoresController < BaseController
     def create
       jwt_params = JwtParams.new(params[:token])
 
@@ -20,6 +20,20 @@ module Api
       else
         head :unauthorized
       end
+    end
+
+    def index
+      scope = NetPromoterScore.where(touchpoint: index_params)
+      scope = scope.where(respondent_class: params[:respondent_class]) if params[:respondent_class].present?
+      scope = scope.where(object_class: params[:object_class]) if params[:object_class].present?
+
+      render json: { net_promoter_scores: scope }
+    end
+
+    private
+
+    def index_params
+      params.require(:touchpoint)
     end
   end
 end

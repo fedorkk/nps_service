@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_25_195416) do
+ActiveRecord::Schema.define(version: 2020_01_25_225015) do
 
   create_table "net_promoter_scores", force: :cascade do |t|
     t.integer "score", null: false
@@ -24,6 +24,7 @@ ActiveRecord::Schema.define(version: 2020_01_25_195416) do
     t.index ["object_class", "object_id"], name: "object_index"
     t.index ["respondent_class", "respondent_id", "object_class", "object_id"], name: "duplication_protection_index", unique: true
     t.index ["respondent_class", "respondent_id"], name: "respondent_index"
+    t.index ["touchpoint"], name: "index_net_promoter_scores_on_touchpoint"
   end
 
 end
