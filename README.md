@@ -12,6 +12,7 @@ bundle exec rails s
 ## Run specs:
 
 ```
+bundle exec rake db:migrate RAILS_ENV=test
 bundle exec rspec
 ```
 
